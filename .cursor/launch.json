@@ -1,0 +1,27 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Debug with Conda",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "python": "/usr/local/anaconda3/envs/rb-micromamba-env/bin/python",
+            "env": {
+                "PYTHONPATH": "/usr/local/anaconda3/envs/rb-micromamba-env/lib/python3.13/site-packages"
+            },
+            "justMyCode": false,
+            "cwd": "${workspaceFolder}",
+            "stopOnEntry": false
+        },
+        {
+            "name": "Python: Attach to Conda Process",
+            "type": "python",
+            "request": "attach",
+            "processId": "${command:pickProcess}",
+            "python": "/usr/local/anaconda3/envs/rb-micromamba-env/bin/python",
+            "justMyCode": false
+        }
+    ]
+}

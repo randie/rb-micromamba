@@ -1,0 +1,10 @@
+#! /bin/bash
+
+# This file is sourced from ~/.zshrc to add
+# project-specific shell startup commands.
+
+PROJECT_ROOT=$HOME/projects/rb-micromamba
+PATH=$PATH:$PROJECT_ROOT/bin
+
+alias make=gmake
+alias mm='micromamba'

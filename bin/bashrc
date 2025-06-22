@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# This file is appended to the default ~/.bashrc @ Fly.io deploy
+# to allow custom shell startup commands to be added to it.
+
+set -o vi
+# PS1="\u@\h:\w\$ "
+alias ls="ls --color=auto"
+alias la="ls -a"
+alias ll="ls -l"
+alias lla="ls -la"
+alias mm="micromamba"

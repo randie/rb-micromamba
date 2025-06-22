@@ -1,0 +1,41 @@
+# macOS system files
+.DS_Store
+
+# Python cache files
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Conda environment or pip-related artifacts
+*.egg-info/
+.eggs/
+pip-wheel-metadata/
+
+# Logs
+*.log
+logs/
+
+# Environment files (optional if you don’t want secrets in the image)
+.env
+.envrc
+
+
+# OS or editor temp files
+*.swp
+*.bak
+*~
+
+# Notebooks (if any, optional)
+*.ipynb_checkpoints
+
+# Compiled C extensions
+*.so
+
+# SQLite or other local databases (if transient)
+*.sqlite
+*.sqlite3
+
+# Build tools
+build/
+dist/

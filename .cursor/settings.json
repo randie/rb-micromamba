@@ -1,0 +1,67 @@
+{
+    // Python Interpreter (Conda)
+    "python.defaultInterpreterPath": "/usr/local/anaconda3/envs/rb-micromamba-env/bin/python",
+    "python.condaPath": "/usr/local/anaconda3/bin/conda",
+    "python.condaAutoActivate": true,
+    "python.condaIndexing": true,
+    // Debugging - Allow stepping into all libraries
+    "debugpy.justMyCode": false,
+    "python.analysis.useLibraryCodeForTypes": true,
+    "python.analysis.autoImportCompletions": true,
+    "python.analysis.typeCheckingMode": "basic",
+    // Formatting and Editor Settings
+    "python.formatting.provider": "black",
+    "python.formatting.blackArgs": [
+        "--line-length",
+        "100"
+    ],
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "ms-python.black-formatter",
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true,
+    // Terminal - Ensure Conda is activated when opening terminal
+    "terminal.integrated.profiles.osx": {
+        "Conda": {
+            "path": "/usr/local/bin/zsh",
+            "args": [
+                "-i",
+                "-c",
+                "conda activate rb-micromamba-env && zsh"
+            ]
+        }
+    },
+    "terminal.integrated.defaultProfile.osx": "Conda",
+    "terminal.integrated.env.osx": {
+        "PYTHONIOENCODING": "utf-8"
+    },
+    // Code Folding & Indentation
+    "editor.folding": true,
+    "editor.foldingStrategy": "auto",
+    "editor.foldingImportsByDefault": true,
+    "editor.detectIndentation": true,
+    // Code Navigation Enhancements
+    "editor.inlayHints.enabled": "on",
+    "editor.parameterHints.enabled": true,
+    "editor.quickSuggestions": {
+        "other": true,
+        "comments": false,
+        "strings": true
+    },
+    "editor.suggest.snippetsPreventQuickSuggestions": false,
+    "editor.suggestSelection": "recentlyUsed",
+    // Auto-Save & File Handling
+    "files.trimTrailingWhitespace": true,
+    "files.insertFinalNewline": true,
+    // Terminal Customization
+    "terminal.integrated.fontSize": 18,
+    "terminal.integrated.cursorBlinking": true,
+    "terminal.integrated.scrollback": 10000,
+    "terminal.integrated.fontFamily": "Consolas, Fira Code, Menlo, 'Courier New', monospace",
+    "terminal.integrated.fontWeight": "normal",
+    "terminal.integrated.fontWeightBold": "bold",
+    // UI Customization
+    "editor.fontSize": 18,
+    "editor.minimap.enabled": false,
+    "workbench.colorTheme": "Visual Studio Dark",
+    "workbench.iconTheme": "simple-icons"
+}
