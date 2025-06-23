@@ -3,7 +3,6 @@ FROM mambaorg/micromamba:2.1.1
 # these args are passed in from the docker command line, for example:
 # docker build --build-arg USERNAME=... --build-arg USER_ID=... --build-arg GROUP_ID=... -t ...
 # See Makefile target 'base-img'
-
 ARG USERNAME
 ARG USER_ID
 ARG GROUP_ID

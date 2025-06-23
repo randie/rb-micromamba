@@ -4,6 +4,9 @@ export
 .ONESHELL:
 .SHELL := /bin/bash
 
+IMAGE_NAME := rb-micromamba
+IMAGE_TAG  := $(or $(TAG),latest)
+
 .PHONY: default
 default: base-img
 
@@ -26,16 +29,13 @@ env_lock.yml: env.yml
 		$(MICROMAMBA_IMAGE) \
 		/bin/bash -c "\
 			micromamba create -n $(ENV_NAME) -y -f $< && \
-			micromamba run -n $(ENV_NAME) micromamba env export -n $(ENV_NAME) > /work/$@"
+			micromamba env export -n $(ENV_NAME) > /work/$@"
 	$(CLEANUP_LOCKFILE) $@
 	@echo "✅ $@ complete"
 
 #   ┌───────────────────────┐
 #   │  B A S E   L A Y E R  │
 #   └───────────────────────┘
-
-IMAGE_NAME := rb-micromamba
-IMAGE_TAG  := $(or $(TAG),latest)
 
 .PHONY: base-img base-keep-alive base-sh
 
@@ -104,31 +104,24 @@ ghcr-tag:
 	$(assert-ghcr-user)
 	docker tag $(IMAGE_NAME):$(IMAGE_TAG) $(GHCR_IMAGE)
 
-ghcr-push: ghcr-tag
-	$(assert-ghcr-user)
-	echo "📦 Pushing image: $(GHCR_IMAGE)"
-	docker push $(GHCR_IMAGE)
+ghcr-push: ghcr-login ghcr-tag
+	docker push $(GHCR_IMAGE) && \
+	echo "✅ Image available at: https://ghcr.io/v2/$$GHCR_USER/$(IMAGE_NAME)/manifests/$(IMAGE_TAG)"
 
 ghcr-status:
 	$(assert-ghcr-user)
-	echo "✅ Image available at: https://ghcr.io/v2/$$GHCR_USER/$(IMAGE_NAME)/manifests/$(IMAGE_TAG)"
-
-ghcr-publish: ghcr-login ghcr-push ghcr-status
-	@echo "$(IMAGE_NAME) published"
-
-ghcr-list-versions:
-	$(assert-ghcr-user)
+	@echo "✅ Image available at: https://ghcr.io/v2/$$GHCR_USER/$(IMAGE_NAME)/manifests/$(IMAGE_TAG)\n"
+	@echo "Version IDs	Tags"
+	@echo "-----------	----"
 	gh api $(GHCR_VERSIONS) --header "Accept: application/vnd.github+json" | \
 	  jq -r '.[] | "\(.id)\t\(.metadata.container.tags | join(", "))"'
 
 ghcr-delete-version:     # delete by version ID
 	$(assert-ghcr-user)
-
 	if [ -z "$(VERSION_ID)" ]; then
 		echo "VERSION_ID is not set. Usage: make ghcr-delete-version VERSION_ID=<id> [FORCE=1]"
 		exit 1
 	fi
-
 	if [ "$(FORCE)" = "1" ]; then
 		gh api --method DELETE $(GHCR_VERSIONS)/$(VERSION_ID) --header "Accept: application/vnd.github+json" && \
 		echo "🧾 Deleted version ID: $(VERSION_ID)"
@@ -138,14 +131,12 @@ ghcr-delete-version:     # delete by version ID
 
 ghcr-delete-untagged:    # delete untagged versions
 	$(assert-ghcr-user)
-
 	UNTAGGED_IDS=$$( gh api $(GHCR_VERSIONS) --header "Accept: application/vnd.github+json" | \
 	  jq -r '.[] | select((.metadata.container.tags | length // 0) == 0) | .id')
 	if [ -z "$$UNTAGGED_IDS" ]; then
 		echo "✅ No untagged versions found for $(IMAGE_NAME)"
 		exit 0
 	fi
-
 	if [ "$(FORCE)" = "1" ]; then
 		echo "🗑️ Deleting untagged versions: \n$$UNTAGGED_IDS"
 		for id in $$UNTAGGED_IDS; do
