@@ -37,6 +37,8 @@ env_lock.yml: env.yml
 #   │  B A S E   L A Y E R  │
 #   └───────────────────────┘
 
+CONTAINER_NAME := rb-micromamba-ka
+
 .PHONY: base-img base-keep-alive base-sh
 
 base-img: env_lock.yml
@@ -47,22 +49,19 @@ base-img: env_lock.yml
 	  -t $(IMAGE_NAME):$(IMAGE_TAG) .
 
 base-keep-alive:
-	docker run -d \
-		--rm \
-		--name rb-micromamba-ka \
-		--volume "$(CURDIR):/work" \
-		--workdir /work \
-		$(IMAGE_NAME):$(IMAGE_TAG) \
-		tail -f /dev/null
+	if ! docker ps --format '{{.Names}}' | grep -q '^$(CONTAINER_NAME)$$'; then
+		docker run -d --rm --name $(CONTAINER_NAME) $(IMAGE_NAME):$(IMAGE_TAG) tail -f /dev/null
+	fi
+	@echo "✅ $(CONTAINER_NAME) is running"
 
 base-sh:
 	if ! docker images --format '{{.Repository}}' | grep -q '^rb-micromamba$$'; then
 		$(MAKE) base-img
 	fi
-	if ! docker ps --format '{{.Names}}' | grep -q '^rb-micromamba-ka$$'; then
+	if ! docker ps --format '{{.Names}}' | grep -q '^$(CONTAINER_NAME)$$'; then
 		$(MAKE) base-keep-alive
 	fi
-	docker exec -it rb-micromamba-ka /bin/bash
+	docker exec -it $(CONTAINER_NAME) /bin/bash
 
 
 #   ┌───────────────────────────┐
