@@ -1,4 +1,4 @@
-# Randie's Conda Base Image
+# Randie's Conda Base Image (WIP)
 
 A lightweight, public Docker base image for Conda-based Python applications — powered by [Micromamba](https://github.com/mamba-org/micromamba). Published to the GitHub Container Registry (GHCR) for seamless use in any project requiring a Conda environment.
 
