@@ -156,4 +156,5 @@ clean:  # Remove containers, image, and dangling layers
 	-docker ps -a --filter ancestor=rb-micromamba:latest --format '{{.ID}}' | xargs -r docker rm -f
 	-docker rmi rb-micromamba:latest
 	-docker image prune -f
+	-docker builder prune --all --force
 	@echo "✅ Clean complete"
