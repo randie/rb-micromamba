@@ -1,4 +1,11 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
+
+# This script is called from Makefile @ target 'env_lock.yml'. It removes
+# urllib3=2 dependencies and comments out the 'prefix' field. Why? Because
+# the conda-installed and pip-installed versions of urllib3 conflict and
+# the prefix field is hardcoded to a path that may be different on different
+# systems.
+
 import re
 import sys
 from pathlib import Path
